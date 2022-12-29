@@ -33,7 +33,7 @@ pub fn run() {
     |> list.take(3)
     |> list.reduce(int.add)
 
-  io.println("[Part 1] Max value: " <> int.to_string(max_calorie_value))
-  io.println("[Part 2] Sum of max three values: " <> int.to_string(max_three_sum))
+  io.println("[Day 1][Part 1] Max value: " <> int.to_string(max_calorie_value))
+  io.println("[Day 1][Part 2] Sum of max three values: " <> int.to_string(max_three_sum))
 }
 
