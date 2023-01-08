@@ -1,5 +1,4 @@
 import gleam/io
-
 import day01
 import day02
 import day03

@@ -59,8 +59,12 @@ fn to_outcome(choices: #(Choice, Choice)) -> Outcome {
 fn parse_round_choices(line: String) -> Result(#(Choice, Choice), Nil) {
   let graphemes = string.to_graphemes(line)
 
-  try first_char = graphemes |> list.at(0)
-  try last_char = graphemes |> list.at(2)
+  try first_char =
+    graphemes
+    |> list.at(0)
+  try last_char =
+    graphemes
+    |> list.at(2)
 
   let opponent_choice = case first_char {
     "A" -> Rock
@@ -76,11 +80,17 @@ fn parse_round_choices(line: String) -> Result(#(Choice, Choice), Nil) {
   Ok(#(opponent_choice, my_choice))
 }
 
-fn parse_round_choice_and_outcome(line: String) -> Result(#(Choice, Outcome), Nil) {
+fn parse_round_choice_and_outcome(
+  line: String,
+) -> Result(#(Choice, Outcome), Nil) {
   let graphemes = string.to_graphemes(line)
 
-  try first_char = graphemes |> list.at(0)
-  try last_char = graphemes |> list.at(2)
+  try first_char =
+    graphemes
+    |> list.at(0)
+  try last_char =
+    graphemes
+    |> list.at(2)
 
   let opponent_choice = case first_char {
     "A" -> Rock
@@ -88,7 +98,7 @@ fn parse_round_choice_and_outcome(line: String) -> Result(#(Choice, Outcome), Ni
     "C" -> Scissors
   }
   let my_choice = case last_char {
-    "X" -> Lose 
+    "X" -> Lose
     "Y" -> Draw
     "Z" -> Win
   }
@@ -97,41 +107,57 @@ fn parse_round_choice_and_outcome(line: String) -> Result(#(Choice, Outcome), Ni
 }
 
 fn calculate_round_choices(choices: #(Choice, Choice)) -> Int {
-  let choice_score = choices.1 |> choice_to_score()
-  let outcome_score = choices |> to_outcome() |> outcome_to_score()
-  
+  let choice_score =
+    choices.1
+    |> choice_to_score()
+  let outcome_score =
+    choices
+    |> to_outcome()
+    |> outcome_to_score()
+
   choice_score + outcome_score
 }
 
 fn calculate_round_choice_and_outcome(choices: #(Choice, Outcome)) -> Int {
-  let choice_score = case choices {
-    #(choice, Win) -> winning_choice(choice)
-    #(choice, Lose) -> losing_choice(choice)
-    #(choice, Draw) -> choice
-  } |> choice_to_score()
+  let choice_score =
+    case choices {
+      #(choice, Win) -> winning_choice(choice)
+      #(choice, Lose) -> losing_choice(choice)
+      #(choice, Draw) -> choice
+    }
+    |> choice_to_score()
 
-  let outcome_score = choices.1 |> outcome_to_score()
-  
+  let outcome_score =
+    choices.1
+    |> outcome_to_score()
+
   choice_score + outcome_score
 }
 
 pub fn run() {
   assert Ok(content) = file.read("input/day02.txt")
-  let lines = content |> string.split("\n")
-  
-  let total_score_part_1 = lines
+  let lines =
+    content
+    |> string.split("\n")
+
+  let total_score_part_1 =
+    lines
     |> list.filter(fn(line) { !string.is_empty(line) })
     |> list.filter_map(parse_round_choices)
     |> list.map(calculate_round_choices)
     |> int.sum()
 
-  let total_score_part_2 = lines
+  let total_score_part_2 =
+    lines
     |> list.filter(fn(line) { !string.is_empty(line) })
     |> list.filter_map(parse_round_choice_and_outcome)
     |> list.map(calculate_round_choice_and_outcome)
     |> int.sum()
 
-  io.println("[Day 2][Part 1] Total score: " <> int.to_string(total_score_part_1))
-  io.println("[Day 2][Part 2] Total score: " <> int.to_string(total_score_part_2))
+  io.println(
+    "[Day 2][Part 1] Total score: " <> int.to_string(total_score_part_1),
+  )
+  io.println(
+    "[Day 2][Part 2] Total score: " <> int.to_string(total_score_part_2),
+  )
 }
-
